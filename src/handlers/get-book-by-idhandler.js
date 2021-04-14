@@ -1,27 +1,18 @@
 const books = require('../books');
+const {
+  getFailedResponseWithMessage,
+  getSuccessResponseWithData,
+} = require('../handler-utils/response-creator');
 
 const getBookByIdHandler = (request, h) => {
   const {bookId} = request.params;
-
   const bookIndex = books.findIndex((book) => book.id === bookId);
 
   if (bookIndex === -1) {
-    const response = h.response({
-      status: 'fail',
-      message: 'Buku tidak ditemukan',
-    });
-    response.code(404);
-    return response;
+    return getFailedResponseWithMessage(h, 'Buku tidak ditemukan', 404);
   }
 
-  const response = h.response({
-    status: 'success',
-    data: {
-      book: books[bookIndex],
-    },
-  });
-  response.code(200);
-  return response;
+  return getSuccessResponseWithData(h, {book: books[bookIndex]});
 };
 
 module.exports = getBookByIdHandler;

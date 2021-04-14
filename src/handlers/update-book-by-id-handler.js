@@ -1,4 +1,8 @@
 const books = require('../books');
+const {
+  getFailedResponseWithMessage,
+  getSuccessResponseWithMessage,
+} = require('../handler-utils/response-creator');
 
 const updateBookByIdHandler = (request, h) => {
   const {bookId} = request.params;
@@ -19,23 +23,14 @@ const updateBookByIdHandler = (request, h) => {
       'Gagal memperbarui buku. Mohon isi nama buku' :
       'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount';
 
-    const response = h.response({
-      status: 'fail',
-      message,
-    });
-    response.code(400);
-    return response;
+    return getFailedResponseWithMessage(h, message, 400);
   };
 
   const bookIndex = books.findIndex((book) => book.id === bookId);
 
   if (bookIndex === -1) {
-    const response = h.response({
-      status: 'fail',
-      message: 'Gagal memperbarui buku. Id tidak ditemukan',
-    });
-    response.code(404);
-    return response;
+    return getFailedResponseWithMessage(
+        h, 'Gagal memperbarui buku. Id tidak ditemukan', 404);
   } else {
     books[bookIndex] = {
       ...books[bookIndex],
@@ -50,14 +45,7 @@ const updateBookByIdHandler = (request, h) => {
       updatedAt,
     };
 
-    console.log(books[bookIndex]);
-
-    const response = h.response({
-      status: 'success',
-      message: 'Buku berhasil diperbarui',
-    });
-    response.code(200);
-    return response;
+    return getSuccessResponseWithMessage(h, 'Buku berhasil diperbarui');
   };
 };
 

@@ -1,15 +1,11 @@
 const books = require('../books');
+const {
+  getSuccessResponseWithData,
+} = require('../handler-utils/response-creator');
 
 const getAllBooksHandler = (request, h) => {
   const filteredBooks = getFilteredBooks();
-  const response = h.response({
-    status: 'success',
-    data: {
-      books: filteredBooks,
-    },
-  });
-  response.code(200);
-  return response;
+  return getSuccessResponseWithData(h, {books: filteredBooks});
 };
 
 const getFilteredBooks = () => {

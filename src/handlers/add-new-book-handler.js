@@ -1,5 +1,9 @@
 const {nanoid} = require('nanoid');
 const books = require('../books');
+const {
+  getFailedResponseWithMessage,
+  getSuccessResponseWithMsgAndData,
+} = require('../handler-utils/response-creator');
 
 const addNewBookHandler = (request, h) => {
   const {
@@ -18,12 +22,7 @@ const addNewBookHandler = (request, h) => {
     'Gagal menambahkan buku. Mohon isi nama buku' :
     'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount';
 
-    const response = h.response({
-      status: 'fail',
-      message,
-    });
-    response.code(400);
-    return response;
+    return getFailedResponseWithMessage(h, message, 400);
   }
 
   const id = nanoid();
@@ -49,15 +48,8 @@ const addNewBookHandler = (request, h) => {
   const newLength = books.push(newBook);
 
   if (books.length === newLength) {
-    const response = h.response({
-      status: 'success',
-      message: 'Buku berhasil ditambahkan',
-      data: {
-        bookId: id,
-      },
-    });
-    response.code(201);
-    return response;
+    return getSuccessResponseWithMsgAndData(
+        h, 'Buku berhasil ditambahkan', {bookId: id}, 201);
   }
 
   const response = h.response({

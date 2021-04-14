@@ -1,4 +1,5 @@
 const addNewBookHandler = require('./handlers/add-new-book-handler');
+const deleteBookByIdHandler = require('./handlers/delete-book-by-id-handler');
 const getAllBooksHandler = require('./handlers/get-all-books-handler');
 const getBookByIdHandler = require('./handlers/get-book-by-idhandler');
 const updateBookByIdHandler = require('./handlers/update-book-by-id-handler');
@@ -27,7 +28,7 @@ const routes = [
   {
     method: 'DELETE',
     path: '/books/{bookId}',
-    handler: updateBookByIdHandler,
+    handler: deleteBookByIdHandler,
   },
 ];
 
