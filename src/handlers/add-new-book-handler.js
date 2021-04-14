@@ -13,20 +13,14 @@ const addNewBookHandler = (request, h) => {
     reading,
   } = request.payload;
 
-  if (name === '' || name === null || name === undefined) {
-    const response = h.response({
-      status: 'fail',
-      message: 'Gagal menambahkan buku. Mohon isi nama buku',
-    });
-    response.code(400);
-    return response;
-  }
+  if (!name || readPage > pageCount) {
+    const message = !name ?
+    'Gagal menambahkan buku. Mohon isi nama buku' :
+    'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount';
 
-  if (readPage > pageCount) {
     const response = h.response({
       status: 'fail',
-      message: 'Gagal menambahkan buku. ' +
-      'readPage tidak boleh lebih besar dari pageCount',
+      message,
     });
     response.code(400);
     return response;
