@@ -26,10 +26,7 @@ const addNewBookHandler = (request, h) => {
   }
 
   const id = nanoid();
-  const finished = pageCount === readPage;
-  const insertedAt = new Date().toISOString();
-  const updatedAt = insertedAt;
-
+  const currentISODate = new Date().toISOString();
   const newBook = {
     id,
     name,
@@ -40,13 +37,12 @@ const addNewBookHandler = (request, h) => {
     pageCount,
     readPage,
     reading,
-    finished,
-    insertedAt,
-    updatedAt,
+    finished: pageCount === readPage,
+    insertedAt: currentISODate,
+    updatedAt: currentISODate,
   };
 
   const newLength = books.push(newBook);
-
   if (books.length === newLength) {
     return getSuccessResponseWithMsgAndData(
         h, 'Buku berhasil ditambahkan', {bookId: id}, 201);

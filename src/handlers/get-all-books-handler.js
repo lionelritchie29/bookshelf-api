@@ -8,23 +8,36 @@ const getAllBooksHandler = (request, h) => {
   let filteredBooks = null;
 
   if (name) {
-    const booksByName = books.filter((book) => {
-      return book.name.toUpperCase().includes(name.toUpperCase());
-    });
-    filteredBooks = getFilteredBooks(booksByName);
+    filteredBooks = getFilteredBooksByName(books, name);
   } else if (reading) {
-    const readBool = reading === '1' ? true : false;
-    const booksByReading = books.filter((book) => book.reading === readBool);
-    filteredBooks = getFilteredBooks(booksByReading);
+    filteredBooks = getFilteredBooksByReading(books, reading);
   } else if (finished) {
-    const finishBool = finished === '1' ? true : false;
-    const booksByFinished =
-      books.filter((book) => book.finished === finishBool);
-    filteredBooks = getFilteredBooks(booksByFinished);
+    filteredBooks = getFilteredBooksByFinished(books, finished);
   } else {
     filteredBooks = getFilteredBooks(books);
   }
   return getSuccessResponseWithData(h, {books: filteredBooks});
+};
+
+const getFilteredBooksByName = (unfilteredBooks, name) => {
+  const booksByName = unfilteredBooks.filter((book) => {
+    return book.name.toUpperCase().includes(name.toUpperCase());
+  });
+  return getFilteredBooks(booksByName);
+};
+
+const getFilteredBooksByFinished = (unfilteredBooks, finished) => {
+  const finishBool = finished === '1' ? true : false;
+  const booksByFinished =
+    unfilteredBooks.filter((book) => book.finished === finishBool);
+  return getFilteredBooks(booksByFinished);
+};
+
+const getFilteredBooksByReading = (unfilteredBooks, reading) => {
+  const readBool = reading === '1' ? true : false;
+  const booksByReading = unfilteredBooks
+      .filter((book) => book.reading === readBool);
+  return getFilteredBooks(booksByReading);
 };
 
 const getFilteredBooks = (unfilteredBooks) => {
